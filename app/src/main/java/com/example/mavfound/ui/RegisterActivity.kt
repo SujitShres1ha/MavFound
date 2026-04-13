@@ -61,13 +61,20 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // NEW: Enforce 8 character minimum
+            if (password.length < 8) {
+                Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            // NEW: Explicit Checkbox Validation
             if (!cbTerms.isChecked) {
-                Toast.makeText(this, "Please agree to the Terms of Service", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "You must agree to the Terms and Conditions", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -92,16 +99,17 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun updatePasswordStrength(password: String, bars: Array<View>, hint: TextView) {
         var strength = 0
-        var message = "Weak — add numbers or symbols"
+        var message = "Weak — minimum 8 characters"
 
         if (password.isNotEmpty()) strength++
-        if (password.length >= 6) {
+        // Adjusted to only hit 'Fair' (2 bars) at 8 characters
+        if (password.length >= 8) {
             strength++
             message = "Fair — add uppercase letters"
         }
         if (password.length >= 8 && password.any { it.isUpperCase() }) {
             strength++
-            message = "Good — almost there"
+            message = "Good — add special characters"
         }
         if (password.length >= 10 && password.any { !it.isLetterOrDigit() }) {
             strength++
@@ -110,8 +118,8 @@ class RegisterActivity : AppCompatActivity() {
 
         val color = when (strength) {
             1 -> Color.RED
-            2 -> Color.parseColor("#F59E0B") // colorWarning
-            3 -> Color.parseColor("#0064B1") // colorPrimary
+            2 -> Color.parseColor("#F59E0B")
+            3 -> Color.parseColor("#0064B1")
             4 -> Color.GREEN
             else -> Color.LTGRAY
         }

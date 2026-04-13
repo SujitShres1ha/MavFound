@@ -242,7 +242,6 @@
                 android:id="@+id/cbTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:buttonTint="@color/colorPrimary"/>
 
             <TextView
@@ -250,11 +249,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:layout_gravity="center_vertical"
                 android:text="I agree to the Terms of Service and Privacy Policy"
                 android:textSize="13sp"
-                android:textColor="@color/colorTextSecondary"
-                android:lineSpacingMultiplier="1.4"/>
+                android:textColor="@color/colorTextSecondary"/>
         </LinearLayout>
 
         <!-- Register Button -->
