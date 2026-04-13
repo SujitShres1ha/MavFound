@@ -229,33 +229,9 @@
                 android:paddingEnd="48dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <!-- Terms Checkbox -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="top"
-            android:layout_marginBottom="24dp">
-
-            <CheckBox
-                android:id="@+id/cbTerms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/colorPrimary"/>
-
-            <TextView
-                android:id="@+id/tvTerms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="I agree to the Terms of Service and Privacy Policy"
-                android:textSize="13sp"
-                android:textColor="@color/colorTextSecondary"/>
-        </LinearLayout>
-
         <!-- Register Button -->
         <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="32dp"
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="52dp"

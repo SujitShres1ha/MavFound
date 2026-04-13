@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +29,6 @@ class RegisterActivity : AppCompatActivity() {
         val etEmail = findViewById<TextInputEditText>(R.id.etEmail)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
         val etConfirmPassword = findViewById<TextInputEditText>(R.id.etConfirmPassword)
-        val cbTerms = findViewById<CheckBox>(R.id.cbTerms)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val tvGoToLogin = findViewById<TextView>(R.id.tvGoToLogin)
         val tvPasswordHint = findViewById<TextView>(R.id.tvPasswordHint)
@@ -61,7 +59,6 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // NEW: Enforce 8 character minimum
             if (password.length < 8) {
                 Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -69,12 +66,6 @@ class RegisterActivity : AppCompatActivity() {
 
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // NEW: Explicit Checkbox Validation
-            if (!cbTerms.isChecked) {
-                Toast.makeText(this, "You must agree to the Terms and Conditions", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -102,7 +93,6 @@ class RegisterActivity : AppCompatActivity() {
         var message = "Weak — minimum 8 characters"
 
         if (password.isNotEmpty()) strength++
-        // Adjusted to only hit 'Fair' (2 bars) at 8 characters
         if (password.length >= 8) {
             strength++
             message = "Fair — add uppercase letters"
