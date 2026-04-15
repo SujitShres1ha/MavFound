@@ -1,8 +1,10 @@
 package com.example.mavfound
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +32,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         etSearch = findViewById(R.id.etSearch)
+
+        val btnGoToVerification = findViewById<Button>(R.id.btnGoToVerification)
+        btnGoToVerification.setOnClickListener {
+            val intent = Intent(this, VerificationActivity::class.java)
+            startActivity(intent)
+        }
+
         recyclerViewItems = findViewById(R.id.recyclerViewItems)
         recyclerViewItems.layoutManager = LinearLayoutManager(this)
         recyclerViewItems.setHasFixedSize(true)

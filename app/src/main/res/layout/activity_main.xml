@@ -25,6 +25,13 @@
         android:padding="12dp"
         android:layout_marginBottom="12dp" />
 
+    <Button
+        android:id="@+id/btnGoToVerification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to Ownership Verification"
+        android:layout_marginBottom="12dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewItems"
         android:layout_width="match_parent"
