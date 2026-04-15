@@ -91,7 +91,7 @@
             android:id="@+id/cardLostMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="24dp"
             android:clickable="true"
             android:focusable="true"
             app:cardCornerRadius="16dp"
@@ -126,6 +126,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Create a listing and set a security question"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="13sp"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMyPostings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/colorStroke"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@color/colorFieldBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_person" app:tint="@color/colorPrimary"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Postings"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View and manage the items you found"
                     android:textColor="@color/colorTextSecondary"
                     android:textSize="13sp"
                     android:textAlignment="center"/>

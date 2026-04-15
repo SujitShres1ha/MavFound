@@ -16,6 +16,7 @@ class DashboardActivity : AppCompatActivity() {
 
         val cardFindMode = findViewById<MaterialCardView>(R.id.cardFindMode)
         val cardLostMode = findViewById<MaterialCardView>(R.id.cardLostMode)
+        val cardMyPostings = findViewById<MaterialCardView>(R.id.cardMyPostings)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
         cardFindMode.setOnClickListener {
@@ -25,9 +26,13 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         cardLostMode.setOnClickListener {
-            // Keep commented out until the Lister Lead builds this screen
-            // val intent = Intent(this, PostItemActivity::class.java)
-            // startActivity(intent)
+            val intent = Intent(this, PostItemActivity::class.java)
+            startActivity(intent)
+        }
+
+        cardMyPostings.setOnClickListener {
+            val intent = Intent(this, MyListingsActivity::class.java)
+            startActivity(intent)
         }
 
         btnLogout.setOnClickListener {

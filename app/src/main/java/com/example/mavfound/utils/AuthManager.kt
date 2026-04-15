@@ -19,11 +19,11 @@ class AuthManager(context: Context) {
         val hashedPassword = hashPassword(plainPassword)
 
         val values = ContentValues().apply {
-            put("name", name)
-            put("email", email)
-            put("password_hash", hashedPassword)
-            put("is_admin", 0) // 0 for regular user
-            put("is_active", 1) // 1 for active
+            put(DatabaseHelper.COLUMN_USER_NAME, name)
+            put(DatabaseHelper.COLUMN_USER_EMAIL, email)
+            put(DatabaseHelper.COLUMN_USER_PASSWORD, hashedPassword)
+            put(DatabaseHelper.COLUMN_USER_IS_ADMIN, 0) // 0 for regular user
+            put(DatabaseHelper.COLUMN_USER_IS_ACTIVE, 1) // 1 for active
         }
 
         // db.insert returns -1 if there's an error (e.g., UNIQUE constraint failure on email)
@@ -44,21 +44,21 @@ class AuthManager(context: Context) {
         val cursor = db.query(
             DatabaseHelper.TABLE_USERS,
             null, // Select all columns
-            "email = ? AND password_hash = ?",
+            "${DatabaseHelper.COLUMN_USER_EMAIL} = ? AND ${DatabaseHelper.COLUMN_USER_PASSWORD} = ?",
             arrayOf(email, hashedPassword),
             null, null, null
         )
 
         if (cursor.moveToFirst()) {
-            val isActive = cursor.getInt(cursor.getColumnIndexOrThrow("is_active")) == 1
+            val isActive = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_IS_ACTIVE)) == 1
 
             if (isActive) {
                 loggedInUser = User(
-                    userId = cursor.getInt(cursor.getColumnIndexOrThrow("user_id")),
-                    name = cursor.getString(cursor.getColumnIndexOrThrow("name")),
-                    email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
-                    passwordHash = cursor.getString(cursor.getColumnIndexOrThrow("password_hash")),
-                    isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow("is_admin")) == 1,
+                    userId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_ID)),
+                    name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_NAME)),
+                    email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_EMAIL)),
+                    passwordHash = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_PASSWORD)),
+                    isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_IS_ADMIN)) == 1,
                     isActive = true
                 )
             }
