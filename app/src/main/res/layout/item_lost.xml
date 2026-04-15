@@ -48,4 +48,11 @@
         android:textStyle="bold"
         android:layout_marginTop="4dp" />
 
+    <Button
+        android:id="@+id/btnClaimItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Claim Item"
+        android:layout_marginTop="8dp" />
+
 </LinearLayout>

@@ -5,5 +5,7 @@ data class LostItem(
     val category: String,
     val location: String,
     val date: String,
-    val reward: String
+    val reward: String,
+    val securityQuestion: String,
+    val correctAnswer: String
 )

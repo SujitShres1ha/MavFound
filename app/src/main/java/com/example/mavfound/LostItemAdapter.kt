@@ -1,8 +1,10 @@
 package com.example.mavfound
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -15,6 +17,7 @@ class LostItemAdapter(private var itemList: List<LostItem>) :
         val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
         val tvDate: TextView = itemView.findViewById(R.id.tvDate)
         val tvReward: TextView = itemView.findViewById(R.id.tvReward)
+        val btnClaimItem: Button = itemView.findViewById(R.id.btnClaimItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LostItemViewHolder {
@@ -25,11 +28,20 @@ class LostItemAdapter(private var itemList: List<LostItem>) :
 
     override fun onBindViewHolder(holder: LostItemViewHolder, position: Int) {
         val currentItem = itemList[position]
+
         holder.tvItemTitle.text = currentItem.title
         holder.tvCategory.text = "Category: ${currentItem.category}"
         holder.tvLocation.text = "Location: ${currentItem.location}"
         holder.tvDate.text = "Date: ${currentItem.date}"
         holder.tvReward.text = "Reward: ${currentItem.reward}"
+
+        holder.btnClaimItem.setOnClickListener {
+            val intent = Intent(holder.itemView.context, VerificationActivity::class.java)
+            intent.putExtra("securityQuestion", currentItem.securityQuestion)
+            intent.putExtra("correctAnswer", currentItem.correctAnswer)
+            intent.putExtra("itemTitle", currentItem.title)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

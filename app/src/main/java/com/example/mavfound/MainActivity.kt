@@ -44,11 +44,51 @@ class MainActivity : AppCompatActivity() {
         recyclerViewItems.setHasFixedSize(true)
 
         lostItemList = arrayListOf(
-            LostItem("iPhone 14", "Electronics", "UTA Library", "Apr 10, 2026", "$20"),
-            LostItem("Blue Backpack", "Bags", "UC Building", "Apr 11, 2026", "$15"),
-            LostItem("Student ID Card", "Documents", "Pickard Hall", "Apr 12, 2026", "$10"),
-            LostItem("AirPods Case", "Electronics", "Central Library", "Apr 13, 2026", "$25"),
-            LostItem("Water Bottle", "Personal Item", "ERB", "Apr 14, 2026", "$5")
+            LostItem(
+                "iPhone 14",
+                "Electronics",
+                "UTA Library",
+                "Apr 10, 2026",
+                "$20",
+                "What color is the phone case?",
+                "blue"
+            ),
+            LostItem(
+                "Blue Backpack",
+                "Bags",
+                "UC Building",
+                "Apr 11, 2026",
+                "$15",
+                "What brand is on the backpack?",
+                "nike"
+            ),
+            LostItem(
+                "Student ID Card",
+                "Documents",
+                "Pickard Hall",
+                "Apr 12, 2026",
+                "$10",
+                "What is the first name on the ID?",
+                "isneha"
+            ),
+            LostItem(
+                "AirPods Case",
+                "Electronics",
+                "Central Library",
+                "Apr 13, 2026",
+                "$25",
+                "What color is the AirPods case cover?",
+                "pink"
+            ),
+            LostItem(
+                "Water Bottle",
+                "Personal Item",
+                "ERB",
+                "Apr 14, 2026",
+                "$5",
+                "What brand is the bottle?",
+                "hydro flask"
+            )
         )
 
         lostItemAdapter = LostItemAdapter(lostItemList)
