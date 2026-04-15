@@ -2,9 +2,11 @@ package com.example.mavfound.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.mavfound.R
 import com.google.android.material.card.MaterialCardView
 
@@ -13,6 +15,17 @@ class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        // Initialize the animated gradient background
+        val rootLayout = findViewById<CoordinatorLayout>(R.id.dashboardRootLayout)
+        val animationDrawable = rootLayout.background as AnimationDrawable
+
+        // Set fade durations for ultra-smooth transitions
+        animationDrawable.setEnterFadeDuration(2000)
+        animationDrawable.setExitFadeDuration(4000)
+
+        // Start the continuous animation loop
+        animationDrawable.start()
 
         val cardFindMode = findViewById<MaterialCardView>(R.id.cardFindMode)
         val cardLostMode = findViewById<MaterialCardView>(R.id.cardLostMode)

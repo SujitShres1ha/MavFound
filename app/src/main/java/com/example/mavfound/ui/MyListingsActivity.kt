@@ -5,10 +5,12 @@ import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +28,15 @@ class MyListingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_listings)
 
-        // 1. Initialize Toolbar - Required for header title & back button
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "My Postings"
+        // 1. Initialize the animated background
+        val rootLayout = findViewById<CoordinatorLayout>(R.id.myListingsRootLayout)
+        val animationDrawable = rootLayout.background as AnimationDrawable
+        animationDrawable.setEnterFadeDuration(2000)
+        animationDrawable.setExitFadeDuration(4000)
+        animationDrawable.start()
+
+        // NOTE: The old Toolbar code was removed here because the new modern UI
+        // uses a large text header instead of an action bar!
 
         dbHelper = DatabaseHelper(this)
 
@@ -63,7 +69,7 @@ class MyListingsActivity : AppCompatActivity() {
 
             rv.adapter = adapter
 
-            // 2. FIX: Use layout_fall_down (the LayoutAnimation) instead of fall_down
+            // RecyclerView entry animation
             try {
                 rv.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_fall_down)
                 rv.scheduleLayoutAnimation()
@@ -73,11 +79,6 @@ class MyListingsActivity : AppCompatActivity() {
 
             setupSwipeDelete(rv)
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
     }
 
     private fun refresh() {
@@ -117,7 +118,8 @@ class MyListingsActivity : AppCompatActivity() {
                 isCurrentlyActive: Boolean
             ) {
                 val paint = Paint()
-                paint.color = Color.parseColor("#D32F2F")
+                // Update the swipe-to-delete background color to match the new destructive red
+                paint.color = Color.parseColor("#EF4444")
 
                 val itemView = viewHolder.itemView
                 c.drawRect(

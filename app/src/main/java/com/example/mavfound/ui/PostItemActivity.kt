@@ -2,6 +2,7 @@ package com.example.mavfound.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
 import com.example.mavfound.R
 import com.example.mavfound.database.DatabaseHelper
@@ -57,6 +59,13 @@ class PostItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_item)
+
+        // 1. Initialize the animated background
+        val rootLayout = findViewById<CoordinatorLayout>(R.id.postItemRootLayout)
+        val animationDrawable = rootLayout.background as AnimationDrawable
+        animationDrawable.setEnterFadeDuration(2000)
+        animationDrawable.setExitFadeDuration(4000)
+        animationDrawable.start()
 
         dbHelper = DatabaseHelper(this)
 
