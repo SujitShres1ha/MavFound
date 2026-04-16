@@ -33,9 +33,8 @@ class DashboardActivity : AppCompatActivity() {
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
         cardFindMode.setOnClickListener {
-            // Keep commented out until the Searcher Lead builds this screen
-            // val intent = Intent(this, FeedActivity::class.java)
-            // startActivity(intent)
+            val intent = Intent(this, FeedActivity::class.java)
+            startActivity(intent)
         }
 
         cardLostMode.setOnClickListener {

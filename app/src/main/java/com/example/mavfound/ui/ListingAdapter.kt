@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.mavfound.R
+import com.example.mavfound.database.DatabaseHelper
 import com.example.mavfound.models.Listing
 import com.google.android.material.button.MaterialButton
 import java.io.File
@@ -20,7 +20,7 @@ class ListingAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tvItemTitle)
-        val tvLoc: TextView = itemView.findViewById(R.id.tvItemLoc)
+        val tvLocation: TextView = itemView.findViewById(R.id.tvItemLoc)
         val tvStatus: TextView = itemView.findViewById(R.id.tvItemStatus)
         val ivThumb: ImageView = itemView.findViewById(R.id.ivItemThumb)
         val btnDelete: MaterialButton = itemView.findViewById(R.id.btnDelete)
@@ -32,35 +32,29 @@ class ListingAdapter(
         return ViewHolder(view)
     }
 
+    // In main/java/com/example/mavfound/ui/ListingAdapter.kt
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listings[position]
+        val dbHelper = DatabaseHelper(holder.itemView.context)
 
+        // Set basic item data
         holder.tvTitle.text = item.title
-        holder.tvLoc.text = item.location
-        holder.tvStatus.text = item.status.uppercase()
+        holder.tvLocation.text = item.location
 
-        if (!item.imagePath.isNullOrEmpty()) {
-            val file = File(item.imagePath)
-            if (file.exists()) {
-                Glide.with(holder.itemView.context)
-                    .load(file)
-                    .placeholder(R.drawable.ic_search)
-                    .error(R.drawable.ic_search)
-                    .centerCrop()
-                    .into(holder.ivThumb)
-            } else {
-                // If not a file path, try as URI string
-                Glide.with(holder.itemView.context)
-                    .load(item.imagePath)
-                    .placeholder(R.drawable.ic_search)
-                    .error(R.drawable.ic_search)
-                    .centerCrop()
-                    .into(holder.ivThumb)
-            }
+        // NEW HANDSHAKE LOGIC: Check for pending claims
+        val claimCount = dbHelper.getClaimCountForListing(item.listingId)
+
+        if (claimCount > 0) {
+            // Highlight that people are waiting for verification
+            holder.tvStatus.text = "$claimCount PENDING CLAIMS"
+            holder.tvStatus.setTextColor(android.graphics.Color.parseColor("#F59E0B")) // Warning Orange
         } else {
-            holder.ivThumb.setImageResource(R.drawable.ic_search)
+            holder.tvStatus.text = item.status
+            holder.tvStatus.setTextColor(android.graphics.Color.parseColor("#0064B1")) // Default Blue
         }
 
+        // Set up click listeners for details and deletion
         holder.itemView.setOnClickListener { onDetailClick(item) }
         holder.btnDelete.setOnClickListener { onDeleteClick(item) }
     }

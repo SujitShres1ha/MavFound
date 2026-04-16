@@ -41,6 +41,9 @@
         <activity android:name=".ui.ListingDetailActivity" android:exported="false" />
         <activity android:name=".ui.MyListingsActivity" android:exported="false" />
 
+        <activity android:name=".ui.FeedActivity" />
+        <activity android:name=".ui.VerificationActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
