@@ -2,6 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MavFound">
+
         <activity
             android:name=".ui.LoginActivity"
             android:exported="true">
@@ -21,10 +34,30 @@
         </activity>
 
         <activity android:name=".ui.RegisterActivity" />
-
         <activity android:name=".ui.DashboardActivity" />
-
         <activity android:name=".ui.AdminDashboardActivity" />
+
+        <activity android:name=".ui.PostItemActivity" android:exported="false" />
+        <activity android:name=".ui.ListingDetailActivity" android:exported="false" />
+        <activity android:name=".ui.MyListingsActivity" android:exported="false" />
+
+        <activity android:name=".ui.FeedActivity" />
+        <activity android:name=".ui.VerificationActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>
