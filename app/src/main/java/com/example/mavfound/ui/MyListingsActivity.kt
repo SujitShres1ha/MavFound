@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mavfound.R
 import com.example.mavfound.database.DatabaseHelper
+import com.example.mavfound.utils.ThemeManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class MyListingsActivity : AppCompatActivity() {
@@ -25,6 +26,7 @@ class MyListingsActivity : AppCompatActivity() {
     private var currentUserId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeManager.applySavedTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_listings)
 

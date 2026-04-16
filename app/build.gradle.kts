@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     // ✅ REQUIRED FIXES
     implementation("androidx.recyclerview:recyclerview:1.3.2")

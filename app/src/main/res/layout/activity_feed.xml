@@ -80,6 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/colorSidebarSelected"
+                    android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/poppins_regular"
                     android:text="All Items" />
 

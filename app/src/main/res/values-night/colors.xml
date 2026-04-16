@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="colorPrimary">#7DB1FF</color>
+    <color name="colorOnPrimary">#08295B</color>
+    <color name="colorSecondary">#FFAA6B</color>
+    <color name="colorOnSecondary">#4F2200</color>
+    <color name="colorBackground">#09111C</color>
+    <color name="colorSurface">#0D1724</color>
+    <color name="colorSurfaceRaised">#132131</color>
+    <color name="colorFieldBackground">#162435</color>
+    <color name="colorCardSurface">#122032</color>
+    <color name="colorCardSurfaceStrong">#192B40</color>
+    <color name="colorSidebarSurface">#0F1B2A</color>
+    <color name="colorSidebarSelected">#1C3557</color>
+    <color name="colorChipBackground">#18304E</color>
+    <color name="colorTextPrimary">#EFF5FF</color>
+    <color name="colorTextSecondary">#A5B4C7</color>
+    <color name="colorIconTint">#8EA5BE</color>
+    <color name="colorStroke">#27405C</color>
+    <color name="colorWarning">#F7B955</color>
+    <color name="colorError">#FF8A8A</color>
+    <color name="colorDestructive">#FF8A8A</color>
+    <color name="gradientStart">#10233A</color>
+    <color name="gradientMiddle">#09111C</color>
+    <color name="gradientEnd">#231A14</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -39,6 +39,11 @@
 
         <activity android:name=".ui.PostItemActivity" android:exported="false" />
         <activity android:name=".ui.ListingDetailActivity" android:exported="false" />
+        <activity android:name=".ui.PaymentActivity" android:exported="false" />
+        <activity android:name=".ui.OrderConfirmationActivity" android:exported="false" />
+        <activity android:name=".ui.ProfileActivity" android:exported="false" />
+        <activity android:name=".ui.OrdersActivity" android:exported="false" />
+        <activity android:name=".ui.OrderDetailActivity" android:exported="false" />
         <activity android:name=".ui.MyListingsActivity" android:exported="false" />
 
         <activity android:name=".ui.FeedActivity" />

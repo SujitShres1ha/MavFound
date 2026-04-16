@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mavfound.R
 import com.example.mavfound.utils.AuthManager
+import com.example.mavfound.utils.ThemeManager
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
@@ -16,6 +17,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeManager.applySavedTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -43,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                 val sharedPrefs = getSharedPreferences("MavFoundPrefs", Context.MODE_PRIVATE)
                 sharedPrefs.edit().apply {
                     putInt("CURRENT_USER_ID", loggedInUser.userId)
+                    putString("CURRENT_USER_NAME", loggedInUser.name)
                     putBoolean("IS_ADMIN", loggedInUser.isAdmin)
                     apply()
                 }

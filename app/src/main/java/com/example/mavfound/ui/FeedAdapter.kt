@@ -1,11 +1,9 @@
 package com.example.mavfound.ui
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mavfound.R
@@ -15,10 +13,9 @@ class FeedAdapter(private var itemList: List<Listing>) : RecyclerView.Adapter<Fe
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvItemTitle: TextView = itemView.findViewById(R.id.tvItemTitle)
-        // FIX: Changed from tvLocation to tvItemLoc to match your XML
         val tvLocation: TextView = itemView.findViewById(R.id.tvItemLoc)
         val tvReward: TextView = itemView.findViewById(R.id.tvReward)
-        val btnClaimItem: Button = itemView.findViewById(R.id.btnClaimItem)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvItemStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,36 +27,26 @@ class FeedAdapter(private var itemList: List<Listing>) : RecyclerView.Adapter<Fe
         val currentItem = itemList[position]
         val context = holder.itemView.context
 
-        val sharedPrefs = context.getSharedPreferences("MavFoundPrefs", Context.MODE_PRIVATE)
-        val currentUserId = sharedPrefs.getInt("CURRENT_USER_ID", -1)
-
         holder.tvItemTitle.text = currentItem.title
         holder.tvLocation.text = "${currentItem.location} • ${currentItem.dateTime}"
-
-        if (currentItem.rewardAmount > 0) {
-            holder.tvReward.text = String.format("Reward: $%.2f", currentItem.rewardAmount)
+        holder.tvReward.text = if (currentItem.rewardAmount > 0) {
+            String.format("Reward: $%.2f", currentItem.rewardAmount)
         } else {
-            holder.tvReward.text = "No Reward Requested"
+            "No Reward Requested"
         }
-
-        // Logical Check: Users cannot claim their own found items
-        if (currentItem.listerId == currentUserId) {
-            holder.btnClaimItem.isEnabled = false
-            holder.btnClaimItem.text = "Your Posting"
-            holder.btnClaimItem.alpha = 0.5f
-        } else {
-            holder.btnClaimItem.isEnabled = true
-            holder.btnClaimItem.text = "Claim Item"
-            holder.btnClaimItem.alpha = 1.0f
-
-            holder.btnClaimItem.setOnClickListener {
-                val intent = Intent(context, VerificationActivity::class.java)
-                // Pass the unique Listing ID for the database handshake
-                intent.putExtra("LISTING_ID", currentItem.listingId)
-                intent.putExtra("itemTitle", currentItem.title)
-                intent.putExtra("securityQuestion", currentItem.securityQuestion)
-                context.startActivity(intent)
+        holder.tvStatus.text = currentItem.status
+        holder.tvStatus.setTextColor(
+            if (currentItem.status.equals("Claimed", ignoreCase = true)) {
+                android.graphics.Color.parseColor("#F59E0B")
+            } else {
+                android.graphics.Color.parseColor("#0064B1")
             }
+        )
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ListingDetailActivity::class.java)
+            intent.putExtra("LISTING_ID", currentItem.listingId)
+            context.startActivity(intent)
         }
     }
 

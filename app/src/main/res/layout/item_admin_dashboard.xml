@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="20dp"
-    android:layout_marginVertical="8dp"
+    android:layout_marginBottom="12dp"
     app:cardBackgroundColor="@color/colorCardSurfaceStrong"
     app:cardCornerRadius="24dp"
     app:cardElevation="0dp"
@@ -15,50 +14,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="18dp">
 
         <TextView
-            android:id="@+id/tvItemTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvAdminItemTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorTextPrimary" />
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvItemLoc"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvAdminItemSubtitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/colorTextSecondary"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tvItemStatus"
+            android:id="@+id/tvAdminItemStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/bg_status_badge"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
-            android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="12dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/tvReward"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold" />
-        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

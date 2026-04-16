@@ -45,7 +45,10 @@ class ListingAdapter(
         // NEW HANDSHAKE LOGIC: Check for pending claims
         val claimCount = dbHelper.getClaimCountForListing(item.listingId)
 
-        if (claimCount > 0) {
+        if (item.status.equals("Claimed", ignoreCase = true)) {
+            holder.tvStatus.text = "CLAIMED"
+            holder.tvStatus.setTextColor(android.graphics.Color.parseColor("#F59E0B"))
+        } else if (claimCount > 0) {
             // Highlight that people are waiting for verification
             holder.tvStatus.text = "$claimCount PENDING CLAIMS"
             holder.tvStatus.setTextColor(android.graphics.Color.parseColor("#F59E0B")) // Warning Orange
