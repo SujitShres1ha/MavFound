@@ -42,6 +42,26 @@ class ListingAdapter(
         holder.tvTitle.text = item.title
         holder.tvLocation.text = item.location
 
+        if (!item.imagePath.isNullOrEmpty()) {
+            val imgFile = File(item.imagePath)
+            if (imgFile.exists()) {
+                holder.ivThumb.setImageURI(android.net.Uri.fromFile(imgFile))
+
+                // Correct way to set padding to 0
+                holder.ivThumb.setPadding(0, 0, 0, 0)
+
+                // Remove the blue tint so the actual photo is visible
+                holder.ivThumb.imageTintList = null
+            }
+        } else {
+            // Reset to default state if no image exists (important for RecyclerView recycling)
+            holder.ivThumb.setImageResource(R.drawable.ic_search)
+
+            // Convert 24dp back to pixels for the default icon padding
+            val paddingPx = (24 * holder.itemView.context.resources.displayMetrics.density).toInt()
+            holder.ivThumb.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
+        }
+
         // NEW HANDSHAKE LOGIC: Check for pending claims
         val claimCount = dbHelper.getClaimCountForListing(item.listingId)
 
