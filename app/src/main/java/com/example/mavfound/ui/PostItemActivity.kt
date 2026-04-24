@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider
 import com.example.mavfound.R
 import com.example.mavfound.database.DatabaseHelper
 import com.example.mavfound.models.Listing
+import com.example.mavfound.utils.ThemeManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -57,6 +58,7 @@ class PostItemActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeManager.applySavedTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_item)
 

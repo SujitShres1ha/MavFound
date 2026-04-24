@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="24dp"
@@ -11,8 +12,8 @@
     app:cardCornerRadius="28dp"
     app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#4DFFFFFF"
-    app:cardBackgroundColor="#CCFFFFFF"
+    app:strokeColor="@color/colorStroke"
+    app:cardBackgroundColor="@color/colorCardSurfaceStrong"
     app:rippleColor="@color/colorPrimary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,11 +35,12 @@
                 android:id="@+id/ivItemThumb"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#E6F0F9"
+                android:background="@color/colorChipBackground"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_search"
-                android:padding="24dp"
-                app:tint="@color/colorPrimary"/>
+                android:padding="0dp"
+                app:tint="@color/colorPrimary"
+                tools:src="@drawable/ic_launcher_background"
+                tools:tint="@null"/>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -97,6 +99,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="52dp"
             android:layout_height="52dp"
+            android:backgroundTint="@color/colorFieldBackground"
             app:icon="@android:drawable/ic_menu_delete"
             app:iconTint="@color/colorDestructive"
             app:layout_constraintBottom_toBottomOf="parent"

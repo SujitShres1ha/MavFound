@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/paymentRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_animated_gradient">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/paymentToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:navigationIconTint="@color/colorTextPrimary" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/colorCardSurfaceStrong"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/colorStroke"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Secure Checkout"
+                        android:textColor="@color/colorSecondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPaymentPageTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Finish your payment"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPaymentPageSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins_light"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="15sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCardholderName"
+                        style="@style/Widget.MavFound.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="Name on card">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCardholderName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:inputType="textPersonName"
+                            android:paddingTop="26dp"
+                            android:paddingBottom="12dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilBillingAddress"
+                        style="@style/Widget.MavFound.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Billing address">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etBillingAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:gravity="top|start"
+                            android:inputType="textPostalAddress"
+                            android:minLines="2"
+                            android:paddingTop="26dp"
+                            android:paddingBottom="12dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCardNumber"
+                        style="@style/Widget.MavFound.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Card number">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:inputType="number"
+                            android:maxLength="19"
+                            android:paddingTop="26dp"
+                            android:paddingBottom="12dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilExpiryDate"
+                            style="@style/Widget.MavFound.TextInputLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Expiry MM/YY">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etExpiryDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_regular"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:paddingTop="26dp"
+                                android:paddingBottom="12dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="12dp"
+                            android:layout_height="1dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilCvv"
+                            style="@style/Widget.MavFound.TextInputLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="CVV">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCvv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_regular"
+                                android:inputType="numberPassword"
+                                android:maxLength="4"
+                                android:paddingTop="26dp"
+                                android:paddingBottom="12dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubmitPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:text="Pay and Confirm"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

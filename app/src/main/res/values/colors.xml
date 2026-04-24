@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000000</color>
-    <color name="colorPrimary">#0064B1</color>
+    <color name="colorPrimary">#0F5BD8</color>
     <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorSecondary">#F58025</color>
+    <color name="colorSecondary">#F97316</color>
     <color name="colorOnSecondary">#FFFFFF</color>
-
-    <color name="colorBackground">#F4F7FA</color> <color name="colorSurface">#FFFFFF</color>
-
-    <color name="colorFieldBackground">#EAEFF5</color>
-
-    <color name="colorTextPrimary">#1E293B</color> <color name="colorTextSecondary">#64748B</color> <color name="colorIconTint">#94A3B8</color>
-    <color name="colorStroke">#E2E8F0</color>
+    <color name="colorBackground">#F3F7FB</color>
+    <color name="colorSurface">#FCFDFE</color>
+    <color name="colorSurfaceRaised">#FFFFFF</color>
+    <color name="colorFieldBackground">#E8EEF5</color>
+    <color name="colorCardSurface">#F9FBFD</color>
+    <color name="colorCardSurfaceStrong">#FFFFFF</color>
+    <color name="colorSidebarSurface">#F8FBFF</color>
+    <color name="colorSidebarSelected">#E7F0FF</color>
+    <color name="colorChipBackground">#EAF2FF</color>
+    <color name="colorTextPrimary">#102033</color>
+    <color name="colorTextSecondary">#5C6E82</color>
+    <color name="colorIconTint">#7890A8</color>
+    <color name="colorStroke">#D9E4F0</color>
     <color name="colorWarning">#F59E0B</color>
     <color name="colorError">#EF4444</color>
     <color name="colorDestructive">#EF4444</color>
+    <color name="gradientStart">#DCEEFF</color>
+    <color name="gradientMiddle">#F6FBFF</color>
+    <color name="gradientEnd">#FFF1DE</color>
     <color name="white">#FFFFFF</color>
 </resources>

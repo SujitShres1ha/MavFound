@@ -78,6 +78,7 @@
         android:text="Post Item"
         android:textColor="@color/colorOnPrimary"
         android:backgroundTint="@color/colorPrimary"
+        app:elevation="0dp"
         app:icon="@drawable/ic_add_box"
         app:iconTint="@color/colorOnPrimary"
         android:layout_gravity="bottom|end"

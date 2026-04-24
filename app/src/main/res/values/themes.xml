@@ -7,9 +7,14 @@
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorSurfaceContainer">@color/colorCardSurface</item>
+        <item name="colorSurfaceContainerHigh">@color/colorCardSurfaceStrong</item>
+        <item name="colorOutline">@color/colorStroke</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
-
         <item name="materialButtonStyle">@style/Widget.MavFound.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.MavFound.Card</item>
     </style>
 
     <style name="Widget.MavFound.Button" parent="Widget.Material3.Button">
@@ -17,6 +22,14 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingVertical">14dp</item>
+    </style>
+
+    <style name="Widget.MavFound.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">26dp</item>
+        <item name="strokeColor">@color/colorStroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardBackgroundColor">@color/colorCardSurface</item>
+        <item name="cardElevation">0dp</item>
     </style>
 
     <style name="Widget.MavFound.Button.Destructive" parent="Widget.MavFound.Button">
@@ -34,5 +47,6 @@
         <item name="boxCornerRadiusBottomStart">16dp</item>
         <item name="boxCornerRadiusBottomEnd">16dp</item>
         <item name="hintTextColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorTextSecondary</item>
     </style>
 </resources>

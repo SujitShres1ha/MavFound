@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mavfound.R
 import com.example.mavfound.database.DatabaseHelper
 import com.example.mavfound.models.Listing
+import com.example.mavfound.utils.ThemeManager
 import com.google.android.material.button.MaterialButton
 
 class FeedActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class FeedActivity : AppCompatActivity() {
     private var currentCategoryFilter = "" // Empty means "All"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeManager.applySavedTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
 
@@ -43,7 +45,7 @@ class FeedActivity : AppCompatActivity() {
         recyclerViewItems.layoutManager = LinearLayoutManager(this)
 
         // FETCH REAL DATA FROM DATABASE
-        allListings = dbHelper.getAllAvailableListings()
+        allListings = dbHelper.getVisibleListings()
 
         feedAdapter = FeedAdapter(allListings)
         recyclerViewItems.adapter = feedAdapter

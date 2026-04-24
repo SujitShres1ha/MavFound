@@ -5,13 +5,16 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.mavfound.models.Listing
+import com.example.mavfound.models.Order
+import com.example.mavfound.models.User
+import java.security.MessageDigest
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "MavFound.db"
-        private const val DATABASE_VERSION = 3 // Incremented version for the new table
+        private const val DATABASE_VERSION = 4
 
         const val TABLE_USERS = "Users"
         const val COLUMN_USER_ID = "user_id"
@@ -30,6 +33,21 @@ class DatabaseHelper(context: Context) :
         const val COLUMN_CLAIMANT_ID = "claimant_id"
         const val COLUMN_CLAIM_DESCRIPTION = "description_provided"
         const val COLUMN_CLAIM_STATUS = "status"
+
+        const val TABLE_ORDERS = "orders"
+        const val COLUMN_ORDER_DB_ID = "order_db_id"
+        const val COLUMN_ORDER_ID = "order_id"
+        const val COLUMN_ORDER_LISTING_ID = "listing_id"
+        const val COLUMN_ORDER_BUYER_ID = "buyer_id"
+        const val COLUMN_ORDER_LISTING_TITLE = "listing_title"
+        const val COLUMN_ORDER_AMOUNT = "amount"
+        const val COLUMN_ORDER_PAYMENT_DATE = "payment_date"
+        const val COLUMN_ORDER_STATUS = "status"
+        const val COLUMN_ORDER_HANDOFF_CODE = "handoff_code"
+
+        private const val SEEDED_ADMIN_NAME = "System Admin"
+        private const val SEEDED_ADMIN_EMAIL = "admin@mavfound.com"
+        private const val SEEDED_ADMIN_PASSWORD = "mavfound123"
     }
 
     override fun onConfigure(db: SQLiteDatabase) {
@@ -79,6 +97,23 @@ class DatabaseHelper(context: Context) :
             )
         """)
 
+        db.execSQL("""
+            CREATE TABLE $TABLE_ORDERS (
+                $COLUMN_ORDER_DB_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_ORDER_ID TEXT UNIQUE,
+                $COLUMN_ORDER_LISTING_ID INTEGER,
+                $COLUMN_ORDER_BUYER_ID INTEGER,
+                $COLUMN_ORDER_LISTING_TITLE TEXT,
+                $COLUMN_ORDER_AMOUNT REAL,
+                $COLUMN_ORDER_PAYMENT_DATE TEXT,
+                $COLUMN_ORDER_STATUS TEXT DEFAULT 'Pending',
+                $COLUMN_ORDER_HANDOFF_CODE TEXT,
+                FOREIGN KEY($COLUMN_ORDER_LISTING_ID) REFERENCES $TABLE_LISTINGS(listing_id),
+                FOREIGN KEY($COLUMN_ORDER_BUYER_ID) REFERENCES $TABLE_USERS($COLUMN_USER_ID)
+            )
+        """)
+
+        ensureSeedAdmin(db)
         db.execSQL("CREATE INDEX idx_listings_user ON $TABLE_LISTINGS(lister_id)")
     }
 
@@ -103,6 +138,24 @@ class DatabaseHelper(context: Context) :
                 )
             """)
         }
+        if (oldVersion < 4) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS $TABLE_ORDERS (
+                    $COLUMN_ORDER_DB_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    $COLUMN_ORDER_ID TEXT UNIQUE,
+                    $COLUMN_ORDER_LISTING_ID INTEGER,
+                    $COLUMN_ORDER_BUYER_ID INTEGER,
+                    $COLUMN_ORDER_LISTING_TITLE TEXT,
+                    $COLUMN_ORDER_AMOUNT REAL,
+                    $COLUMN_ORDER_PAYMENT_DATE TEXT,
+                    $COLUMN_ORDER_STATUS TEXT DEFAULT 'Pending',
+                    $COLUMN_ORDER_HANDOFF_CODE TEXT,
+                    FOREIGN KEY($COLUMN_ORDER_LISTING_ID) REFERENCES $TABLE_LISTINGS(listing_id),
+                    FOREIGN KEY($COLUMN_ORDER_BUYER_ID) REFERENCES $TABLE_USERS($COLUMN_USER_ID)
+                )
+            """)
+        }
+        ensureSeedAdmin(db)
     }
 
     // --- Listing Methods ---
@@ -123,9 +176,12 @@ class DatabaseHelper(context: Context) :
         return writableDatabase.insert(TABLE_LISTINGS, null, cv)
     }
 
-    fun getAllAvailableListings(): List<Listing> {
+    fun getVisibleListings(): List<Listing> {
         val list = mutableListOf<Listing>()
-        readableDatabase.rawQuery("SELECT * FROM $TABLE_LISTINGS WHERE status = 'Available' ORDER BY listing_id DESC", null).use { cursor ->
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_LISTINGS WHERE status != 'Delivered' ORDER BY listing_id DESC",
+            null
+        ).use { cursor ->
             if (cursor.moveToFirst()) {
                 do {
                     list.add(mapCursorToListing(cursor))
@@ -165,6 +221,155 @@ class DatabaseHelper(context: Context) :
         return count
     }
 
+    fun insertOrder(order: Order): Long {
+        val values = ContentValues().apply {
+            put(COLUMN_ORDER_ID, order.orderId)
+            put(COLUMN_ORDER_LISTING_ID, order.listingId)
+            put(COLUMN_ORDER_BUYER_ID, order.buyerId)
+            put(COLUMN_ORDER_LISTING_TITLE, order.listingTitle)
+            put(COLUMN_ORDER_AMOUNT, order.amount)
+            put(COLUMN_ORDER_PAYMENT_DATE, order.paymentDate)
+            put(COLUMN_ORDER_STATUS, order.status)
+            put(COLUMN_ORDER_HANDOFF_CODE, order.handoffCode)
+        }
+        return writableDatabase.insert(TABLE_ORDERS, null, values)
+    }
+
+    fun getOrdersForUser(userId: Int): List<Order> {
+        val orders = mutableListOf<Order>()
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_ORDERS WHERE $COLUMN_ORDER_BUYER_ID=? ORDER BY $COLUMN_ORDER_DB_ID DESC",
+            arrayOf(userId.toString())
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                orders.add(mapCursorToOrder(cursor))
+            }
+        }
+        return orders
+    }
+
+    fun getOrdersByStatus(status: String): List<Order> {
+        val orders = mutableListOf<Order>()
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_ORDERS WHERE $COLUMN_ORDER_STATUS=? ORDER BY $COLUMN_ORDER_DB_ID DESC",
+            arrayOf(status)
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                orders.add(mapCursorToOrder(cursor))
+            }
+        }
+        return orders
+    }
+
+    fun getOrdersForListing(listingId: Int): List<Order> {
+        val orders = mutableListOf<Order>()
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_ORDERS WHERE $COLUMN_ORDER_LISTING_ID=? ORDER BY $COLUMN_ORDER_DB_ID DESC",
+            arrayOf(listingId.toString())
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                orders.add(mapCursorToOrder(cursor))
+            }
+        }
+        return orders
+    }
+
+    fun getOrderByOrderId(orderId: String): Order? {
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_ORDERS WHERE $COLUMN_ORDER_ID=?",
+            arrayOf(orderId)
+        ).use { cursor ->
+            return if (cursor.moveToFirst()) mapCursorToOrder(cursor) else null
+        }
+    }
+
+    fun getUserNameById(userId: Int): String? {
+        readableDatabase.rawQuery(
+            "SELECT $COLUMN_USER_NAME FROM $TABLE_USERS WHERE $COLUMN_USER_ID=?",
+            arrayOf(userId.toString())
+        ).use { cursor ->
+            return if (cursor.moveToFirst()) cursor.getString(0) else null
+        }
+    }
+
+    fun getAllUsers(): List<User> {
+        val users = mutableListOf<User>()
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_USERS ORDER BY $COLUMN_USER_ID DESC",
+            null
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                users.add(
+                    User(
+                        userId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)),
+                        name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_NAME)),
+                        email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_EMAIL)),
+                        passwordHash = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_PASSWORD)),
+                        isAdmin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_IS_ADMIN)) == 1,
+                        isActive = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_IS_ACTIVE)) == 1
+                    )
+                )
+            }
+        }
+        return users
+    }
+
+    fun updateUserAdmin(userId: Int, name: String, email: String, isAdmin: Boolean, isActive: Boolean): Boolean {
+        val duplicateCursor = readableDatabase.rawQuery(
+            "SELECT $COLUMN_USER_ID FROM $TABLE_USERS WHERE $COLUMN_USER_EMAIL=? AND $COLUMN_USER_ID!=?",
+            arrayOf(email, userId.toString())
+        )
+        duplicateCursor.use {
+            if (it.moveToFirst()) return false
+        }
+
+        val values = ContentValues().apply {
+            put(COLUMN_USER_NAME, name)
+            put(COLUMN_USER_EMAIL, email)
+            put(COLUMN_USER_IS_ADMIN, if (isAdmin) 1 else 0)
+            put(COLUMN_USER_IS_ACTIVE, if (isActive) 1 else 0)
+        }
+        return writableDatabase.update(TABLE_USERS, values, "$COLUMN_USER_ID=?", arrayOf(userId.toString())) > 0
+    }
+
+    fun deleteUser(userId: Int): Int =
+        writableDatabase.delete(TABLE_USERS, "$COLUMN_USER_ID=?", arrayOf(userId.toString()))
+
+    fun getAllListings(): List<Listing> {
+        val listings = mutableListOf<Listing>()
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_LISTINGS ORDER BY listing_id DESC",
+            null
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                listings.add(mapCursorToListing(cursor))
+            }
+        }
+        return listings
+    }
+
+    fun updateListingAdmin(listingId: Int, rewardAmount: Double, status: String): Boolean {
+        val values = ContentValues().apply {
+            put("reward_amount", rewardAmount)
+            put("status", status)
+        }
+        return writableDatabase.update(TABLE_LISTINGS, values, "listing_id=?", arrayOf(listingId.toString())) > 0
+    }
+
+    fun updateOrderStatus(orderId: String, status: String): Int {
+        val values = ContentValues().apply {
+            put(COLUMN_ORDER_STATUS, status)
+        }
+        return writableDatabase.update(TABLE_ORDERS, values, "$COLUMN_ORDER_ID=?", arrayOf(orderId))
+    }
+
+    fun updateListingStatus(listingId: Int, status: String): Int {
+        val values = ContentValues().apply {
+            put("status", status)
+        }
+        return writableDatabase.update(TABLE_LISTINGS, values, "listing_id=?", arrayOf(listingId.toString()))
+    }
+
     // --- Utility Methods ---
 
     private fun mapCursorToListing(c: android.database.Cursor): Listing {
@@ -193,9 +398,49 @@ class DatabaseHelper(context: Context) :
         return false
     }
 
+    private fun mapCursorToOrder(c: android.database.Cursor): Order {
+        return Order(
+            orderDbId = c.getInt(c.getColumnIndexOrThrow(COLUMN_ORDER_DB_ID)),
+            orderId = c.getString(c.getColumnIndexOrThrow(COLUMN_ORDER_ID)),
+            listingId = c.getInt(c.getColumnIndexOrThrow(COLUMN_ORDER_LISTING_ID)),
+            buyerId = c.getInt(c.getColumnIndexOrThrow(COLUMN_ORDER_BUYER_ID)),
+            listingTitle = c.getString(c.getColumnIndexOrThrow(COLUMN_ORDER_LISTING_TITLE)),
+            amount = c.getDouble(c.getColumnIndexOrThrow(COLUMN_ORDER_AMOUNT)),
+            paymentDate = c.getString(c.getColumnIndexOrThrow(COLUMN_ORDER_PAYMENT_DATE)),
+            status = c.getString(c.getColumnIndexOrThrow(COLUMN_ORDER_STATUS)),
+            handoffCode = c.getString(c.getColumnIndexOrThrow(COLUMN_ORDER_HANDOFF_CODE))
+        )
+    }
+
+    private fun ensureSeedAdmin(db: SQLiteDatabase) {
+        db.rawQuery(
+            "SELECT $COLUMN_USER_ID FROM $TABLE_USERS WHERE $COLUMN_USER_EMAIL = ?",
+            arrayOf(SEEDED_ADMIN_EMAIL)
+        ).use { cursor ->
+            if (cursor.moveToFirst()) return
+        }
+
+        val values = ContentValues().apply {
+            put(COLUMN_USER_NAME, SEEDED_ADMIN_NAME)
+            put(COLUMN_USER_EMAIL, SEEDED_ADMIN_EMAIL)
+            put(COLUMN_USER_PASSWORD, hashPassword(SEEDED_ADMIN_PASSWORD))
+            put(COLUMN_USER_IS_ADMIN, 1)
+            put(COLUMN_USER_IS_ACTIVE, 1)
+        }
+        db.insert(TABLE_USERS, null, values)
+    }
+
+    private fun hashPassword(password: String): String {
+        val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
+
     fun getMyListings(userId: Int): List<Listing> {
         val list = mutableListOf<Listing>()
-        readableDatabase.rawQuery("SELECT * FROM $TABLE_LISTINGS WHERE lister_id=?", arrayOf(userId.toString())).use { c ->
+        readableDatabase.rawQuery(
+            "SELECT * FROM $TABLE_LISTINGS WHERE lister_id=? AND status != 'Delivered'",
+            arrayOf(userId.toString())
+        ).use { c ->
             while (c.moveToNext()) list.add(mapCursorToListing(c))
         }
         return list
